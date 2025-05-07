@@ -5,16 +5,21 @@ using MongoFramework;
 using MongoFramework.AspNetCore.Identity;
 using HotelBooking.Api.Database;
 using HotelBooking.Api.Identity;
+using HotelManagement.Profiles;
+using HotelManagement.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register MongoDbConnection
-builder.Services.AddSingleton<IMongoDbConnection>(sp =>
+builder.Services.AddScoped<IMongoDbConnection>(sp =>
     MongoDbConnection.FromConnectionString("mongodb://localhost:27017/HotelBookingDb")
 );
 
+
 // 🔥 Register the custom DbContext
 builder.Services.AddScoped<MongoDbContext, IdentityDbContext>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Register Identity
 builder.Services.AddMongoIdentity<ApplicationUser, ApplicationRole>()
@@ -23,6 +28,7 @@ builder.Services.AddMongoIdentity<ApplicationUser, ApplicationRole>()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

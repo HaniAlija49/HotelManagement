@@ -8,8 +8,5 @@ namespace HotelManagement.Data
         public IdentityDbContext(IMongoDbConnection connection) : base(connection)
         {
         }
-
-
-
     }
 }
