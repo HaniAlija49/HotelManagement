@@ -30,12 +30,14 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 // ✅ AutoMapper
 builder.Services.AddAutoMapper(typeof(HotelProfile));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(typeof(RoomProfile));
 builder.Services.AddAutoMapper(typeof(BookingProfile));
+builder.Services.AddAutoMapper(typeof(ReportProfile));
 
 // ✅ Identity with MongoFramework
 builder.Services.AddMongoIdentity<ApplicationUser, ApplicationRole>()
