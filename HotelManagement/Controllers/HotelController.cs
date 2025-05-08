@@ -4,6 +4,7 @@ using HotelManagement.DTOs.Responses;
 using HotelManagement.Interfaces;
 using HotelManagement.Models;
 using HotelManagement.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace HotelManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HotelController : ControllerBase
     {
         private readonly IHotelRepository _repository;

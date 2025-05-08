@@ -3,12 +3,14 @@ using HotelManagement.DTOs.Requests;
 using HotelManagement.DTOs.Responses;
 using HotelManagement.Interfaces;
 using HotelManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HotelManagement.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RoomController : ControllerBase

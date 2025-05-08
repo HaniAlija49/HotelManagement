@@ -23,7 +23,7 @@ namespace HotelManagement.Models
         [BsonElement("comment")]
         public string Comment { get; set; }
 
-        [BsonElement("reviewDate")]
-        public DateTime ReviewDate { get; set; }
+        [BsonElement("createdAtDate")]
+        public DateTime CreatedAt { get; set; }
     }
 }
