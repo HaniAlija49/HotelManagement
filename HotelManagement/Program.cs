@@ -29,11 +29,13 @@ builder.Services.AddScoped<MongoDbContext, IdentityDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
 // ✅ AutoMapper
 builder.Services.AddAutoMapper(typeof(HotelProfile));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(typeof(RoomProfile));
+builder.Services.AddAutoMapper(typeof(BookingProfile));
 
 // ✅ Identity with MongoFramework
 builder.Services.AddMongoIdentity<ApplicationUser, ApplicationRole>()
