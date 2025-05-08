@@ -32,5 +32,9 @@ namespace HotelManagement.Repositories
         {
             await _userManager.AddToRoleAsync(user, role);
         }
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
+        {
+            return await _userManager.GetRolesAsync(user);
+        }
     }
 }

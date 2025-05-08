@@ -3,7 +3,6 @@ using HotelManagement.DTOs.Responses;
 using HotelManagement.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -16,20 +15,22 @@ namespace HotelManagement.Controllers
         private readonly IUserRepository _userRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
+        private readonly JwtService _jwtService;
 
         public AuthController(
             IUserRepository userRepository,
             SignInManager<ApplicationUser> signInManager,
-            IMapper mapper)
+            IMapper mapper,
+            JwtService jwtService)
         {
             _userRepository = userRepository;
             _signInManager = signInManager;
             _mapper = mapper;
+            _jwtService = jwtService;
         }
 
-        // POST: api/auth/register
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] DTOs.Requests.RegisterRequest request)
         {
             if (await _userRepository.GetByEmailAsync(request.Email) is not null)
                 return BadRequest("User already exists.");
@@ -44,9 +45,8 @@ namespace HotelManagement.Controllers
             return Ok("User registered successfully.");
         }
 
-        // POST: api/auth/login
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] DTOs.Requests.LoginRequest request)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
             if (user == null) return Unauthorized("Invalid credentials.");
@@ -54,21 +54,25 @@ namespace HotelManagement.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             if (!result.Succeeded) return Unauthorized("Invalid credentials.");
 
-            // TODO: Replace with JWT or cookie logic
-            return Ok("Login successful.");
+            var roles = await _userRepository.GetRolesAsync(user);
+            var token = _jwtService.GenerateToken(user, roles);
+
+            return Ok(new { token });
         }
 
-        // GET: api/auth/me
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userRepository.GetByIdAsync(userId);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
+            var user = await _userRepository.GetByIdAsync(userId);
             if (user == null) return NotFound();
 
             var userDto = _mapper.Map<UserDto>(user);
+            userDto.Roles = (await _userRepository.GetRolesAsync(user)).ToList();
+
             return Ok(userDto);
         }
     }
