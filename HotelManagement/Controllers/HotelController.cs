@@ -1,0 +1,65 @@
+﻿using AutoMapper;
+using HotelManagement.DTOs.Requests;
+using HotelManagement.DTOs.Responses;
+using HotelManagement.Interfaces;
+using HotelManagement.Models;
+using HotelManagement.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace HotelManagement.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HotelController : ControllerBase
+    {
+        private readonly IHotelRepository _repository;
+        private readonly IMapper _mapper;
+
+        public HotelController(IHotelRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<HotelDto>>> GetAll()
+        {
+            var hotels = await _repository.GetAllAsync();
+            return Ok(_mapper.Map<IEnumerable<HotelDto>>(hotels));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<HotelDto>> GetById(string id)
+        {
+            var hotel = await _repository.GetByIdAsync(id);
+            if (hotel == null) return NotFound();
+
+            return Ok(_mapper.Map<HotelDto>(hotel));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(CreateHotelDto dto)
+        {
+            var hotel = _mapper.Map<Hotel>(dto);
+            await _repository.AddAsync(hotel);
+            return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(string id, CreateHotelDto dto)
+        {
+            var hotel = _mapper.Map<Hotel>(dto);
+            await _repository.UpdateAsync(id, hotel);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _repository.DeleteAsync(id);
+            return NoContent();
+        }
+    }
+}
