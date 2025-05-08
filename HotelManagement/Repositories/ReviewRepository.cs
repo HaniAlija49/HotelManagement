@@ -31,7 +31,7 @@ namespace HotelManagement.Repositories
 
         public async Task CreateAsync(Review review)
         {
-            await _context.Set<Review>().AddAsync(review);
+            _context.Set<Review>().Add(review);
             await _context.SaveChangesAsync();
         }
 

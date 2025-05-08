@@ -10,7 +10,7 @@ namespace HotelBooking.Api.Database
             var collections = await db.ListCollectionNames().ToListAsync();
 
             string[] neededCollections = {
-                "Hotels", "Rooms", "Bookings", "Reviews", "Reports", "Users", "Roles"
+                "Hotel", "Room", "Booking", "Review", "Report"
             };
 
             foreach (var name in neededCollections)
