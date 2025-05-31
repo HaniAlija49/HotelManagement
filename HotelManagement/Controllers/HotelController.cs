@@ -26,11 +26,20 @@ namespace HotelManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HotelDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<HotelDto>>> GetAll(
+       [FromQuery] int page = 1,
+       [FromQuery] int pageSize = 10)
         {
             var hotels = await _repository.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<HotelDto>>(hotels));
+
+            var paged = hotels
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(_mapper.Map<IEnumerable<HotelDto>>(paged));
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelDto>> GetById(string id)
