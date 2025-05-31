@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using HotelManagement.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
 
 // ✅ AutoMapper
 builder.Services.AddAutoMapper(typeof(HotelProfile));
@@ -48,6 +51,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(typeof(RoomProfile));
 builder.Services.AddAutoMapper(typeof(BookingProfile));
 builder.Services.AddAutoMapper(typeof(ReportProfile));
+builder.Services.AddAutoMapper(typeof(ReviewProfile));
 
 // ✅ Identity with MongoFramework
 builder.Services.AddMongoIdentity<ApplicationUser, ApplicationRole>()
