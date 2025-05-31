@@ -76,6 +76,17 @@ namespace HotelManagement.Controllers
 
             return Ok(_mapper.Map<IEnumerable<HotelDto>>(filtered));
         }
+        [HttpGet("sorted-by-rating")]
+        public async Task<ActionResult<IEnumerable<HotelDto>>> GetSortedByRating([FromQuery] bool descending = true)
+        {
+            var hotels = await _repository.GetAllAsync();
+            var sorted = descending
+                ? hotels.OrderByDescending(h => h.Rating)
+                : hotels.OrderBy(h => h.Rating);
+
+            return Ok(_mapper.Map<IEnumerable<HotelDto>>(sorted));
+        }
+
 
     }
 }
