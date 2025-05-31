@@ -63,5 +63,19 @@ namespace HotelManagement.Controllers
             await _repository.DeleteAsync(id);
             return NoContent();
         }
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<HotelDto>>> Search([FromQuery] string? name, [FromQuery] string? city, [FromQuery] string? country)
+        {
+            var hotels = await _repository.GetAllAsync();
+
+            var filtered = hotels.Where(h =>
+                (string.IsNullOrEmpty(name) || h.Name.Contains(name, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(city) || h.City.Contains(city, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(country) || h.Country.Contains(country, StringComparison.OrdinalIgnoreCase))
+            );
+
+            return Ok(_mapper.Map<IEnumerable<HotelDto>>(filtered));
+        }
+
     }
 }
