@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
 using HotelManagement.Contracts;
+using HotelManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
+// Add Movie Service
+builder.Services.AddHttpClient<IMovieService, MovieService>();
 
 // ✅ AutoMapper
 builder.Services.AddAutoMapper(typeof(HotelProfile));
