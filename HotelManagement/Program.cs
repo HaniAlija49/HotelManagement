@@ -3,6 +3,7 @@ using HotelManagement.Data;
 using HotelManagement.Profiles;
 using HotelManagement.Repositories;
 using HotelManagement.Interfaces;
+using HotelManagement.Infrastructure.Middleware;
 using HotelBooking.Api.Identity;
 using HotelBooking.Api.Database;
 using Microsoft.AspNetCore.Identity;
@@ -14,9 +15,18 @@ using HotelManagement.Profiles;
 using HotelManagement.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/hotel-management-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // ✅ MongoDB connection
 builder.Services.AddScoped<IMongoDbConnection>(sp =>
@@ -110,8 +120,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
 }
+
+// Add global exception handler
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
