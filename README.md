@@ -24,13 +24,21 @@ A RESTful Hotel and Room Booking System built with ASP.NET Core 8 and MongoDB. T
 ## 📂 Project Structure
 
 /HotelManagement
+
 ├── Controllers
+
 ├── Interfaces
+
 ├── Models
+
 ├── Repositories
+
 ├── DTOs
+
 ├── Profiles
+
 ├── Data
+
 └── Program.cs
 
 
@@ -61,9 +69,11 @@ Use Swagger or Postman to test endpoints like:
 /api/report
 
 👥 Team
+
 Hani Alija
 
 Uvejs Murtezi
+
 
 📘 License
 This project is for educational purposes under Southeast European University.
