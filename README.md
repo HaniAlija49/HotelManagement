@@ -76,4 +76,5 @@ Uvejs Murtezi
 
 
 📘 License
+
 This project is for educational purposes under Southeast European University.
